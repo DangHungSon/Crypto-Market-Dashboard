@@ -1,4 +1,15 @@
+import { Select } from '@/components/Select'
 import type { SortDirection, SortField } from '@/types/crypto'
+
+const SORT_FIELD_OPTIONS = [
+  { value: 'price' as const, label: 'Price' },
+  { value: 'change24h' as const, label: '24h change' },
+] satisfies { value: SortField; label: string }[]
+
+const SORT_DIRECTION_OPTIONS = [
+  { value: 'desc' as const, label: 'Ascending' },
+  { value: 'asc' as const, label: 'Descending' },
+] satisfies { value: SortDirection; label: string }[]
 
 interface SortControlsProps {
   field: SortField
@@ -14,31 +25,23 @@ export function SortControls({
   onDirectionChange,
 }: SortControlsProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <label className="flex items-center gap-2 text-sm text-muted">
-        Sort by
-        <select
-          value={field}
-          onChange={(event) => onFieldChange(event.target.value as SortField)}
-          className="rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-foreground outline-none focus:border-accent"
-        >
-          <option value="price">Price</option>
-          <option value="change24h">24h Change</option>
-        </select>
-      </label>
-      <label className="flex items-center gap-2 text-sm text-muted">
-        Order
-        <select
-          value={direction}
-          onChange={(event) =>
-            onDirectionChange(event.target.value as SortDirection)
-          }
-          className="rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-foreground outline-none focus:border-accent"
-        >
-          <option value="desc">Descending</option>
-          <option value="asc">Ascending</option>
-        </select>
-      </label>
+    <div
+      className="flex flex-wrap items-end gap-3 sm:gap-4"
+      role="group"
+      aria-label="Sort cryptocurrencies"
+    >
+      <Select
+        label="Sort by"
+        value={field}
+        options={SORT_FIELD_OPTIONS}
+        onChange={onFieldChange}
+      />
+      <Select
+        label="Order"
+        value={direction}
+        options={SORT_DIRECTION_OPTIONS}
+        onChange={onDirectionChange}
+      />
     </div>
   )
 }

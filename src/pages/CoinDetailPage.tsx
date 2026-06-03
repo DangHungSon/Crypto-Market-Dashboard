@@ -1,7 +1,7 @@
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { ErrorState } from '@/components/ErrorState'
 import { Header } from '@/components/Header'
-import { LoadingGrid } from '@/components/LoadingGrid'
+import { CoinDetailSkeleton } from '@/components/CoinDetailSkeleton'
 import { PriceChart } from '@/components/PriceChart'
 import { useCoinChart, useMarketsQuery } from '@/hooks/useCryptoMarkets'
 import { getQueryError } from '@/lib/queryUtils'
@@ -40,7 +40,7 @@ export function CoinDetailPage() {
   if (!coinId) {
     return (
       <div className="min-h-screen">
-        <Header showBack title="Coin details" />
+        <Header />
         <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
           <ErrorState message="Invalid coin id." onRetry={retry} />
         </main>
@@ -50,9 +50,14 @@ export function CoinDetailPage() {
 
   return (
     <div className="min-h-screen">
-      <Header showBack title={asset?.name ?? 'Coin details'} />
+      <Header />
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-        {loading ? <LoadingGrid /> : null}
+        <div className="mb-6">
+          <button type="button" className="cursor-pointer text-sm text-accent" onClick={() => window.history.back()}>
+            ← Back to markets
+          </button>
+        </div>
+        {loading ? <CoinDetailSkeleton /> : null}
 
         {!loading && errorMessage ? (
           <ErrorState
@@ -109,13 +114,6 @@ export function CoinDetailPage() {
               <h3 className="mb-3 text-lg font-medium">7-day price chart</h3>
               <PriceChart data={chartQuery.data ?? []} />
             </section>
-
-            <Link
-              to="/"
-              className="inline-flex text-sm text-accent hover:underline"
-            >
-              ← Back to all coins
-            </Link>
           </div>
         ) : null}
       </main>
