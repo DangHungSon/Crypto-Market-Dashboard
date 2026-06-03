@@ -1,23 +1,31 @@
-import { Header } from '@/components/Header'
-import { MarketTable } from '@/components/MarketTable'
-import { useCryptoMarkets } from '@/hooks/useCryptoMarkets'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { lazy, Suspense } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { LoadingGrid } from '@/components/LoadingGrid'
+import { ThemeProvider } from '@/context/ThemeProvider'
+import { queryClient } from '@/lib/queryClient'
+import { DashboardPage } from '@/pages/DashboardPage'
+
+const CoinDetailPage = lazy(() =>
+  import('@/pages/CoinDetailPage').then((module) => ({
+    default: module.CoinDetailPage,
+  })),
+)
 
 function App() {
-  const { assets, loading, error } = useCryptoMarkets(10)
-
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <section className="mb-6">
-          <h2 className="text-lg font-medium text-white">Top cryptocurrencies</h2>
-          <p className="mt-1 text-sm text-muted">
-            Track prices, 24h change, market cap, and volume.
-          </p>
-        </section>
-        <MarketTable assets={assets} loading={loading} error={error} />
-      </main>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Suspense fallback={<LoadingGrid />}>
+            <Routes>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/coin/:coinId" element={<CoinDetailPage />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
 
