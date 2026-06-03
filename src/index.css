@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-surface: #0f1419;
+  --color-surface-raised: #1a2332;
+  --color-border: #2d3748;
+  --color-muted: #94a3b8;
+  --color-accent: #22d3ee;
+  --color-positive: #34d399;
+  --color-negative: #f87171;
+}
+
+body {
+  @apply m-0 min-h-screen bg-surface text-slate-100 antialiased;
+}
+
+#root {
+  @apply min-h-screen;
+}
