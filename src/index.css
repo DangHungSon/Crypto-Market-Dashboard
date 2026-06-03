@@ -1,6 +1,20 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
 @theme {
+  --color-surface: #f8fafc;
+  --color-surface-raised: #ffffff;
+  --color-border: #e2e8f0;
+  --color-muted: #64748b;
+  --color-accent: #0891b2;
+  --color-positive: #059669;
+  --color-negative: #dc2626;
+  --color-foreground: #0f172a;
+}
+
+[data-theme='dark'] {
   --color-surface: #0f1419;
   --color-surface-raised: #1a2332;
   --color-border: #2d3748;
@@ -8,10 +22,11 @@
   --color-accent: #22d3ee;
   --color-positive: #34d399;
   --color-negative: #f87171;
+  --color-foreground: #f8fafc;
 }
 
 body {
-  @apply m-0 min-h-screen bg-surface text-slate-100 antialiased;
+  @apply m-0 min-h-screen bg-surface text-foreground antialiased;
 }
 
 #root {
